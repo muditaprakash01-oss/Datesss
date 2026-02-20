@@ -12,9 +12,9 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: 'Cormorant Garamond', serif;
+  background: #000;
 }
 
-/* ---------- SCREENS ---------- */
 .screen {
   position: absolute;
   width: 100%;
@@ -31,11 +31,12 @@ html, body {
   center / cover no-repeat;
   color: #fff;
   text-align: center;
+  transition: opacity 1s ease;
 }
 
 #mystery h2 {
-  font-weight: 300;
   letter-spacing: 2px;
+  font-weight: 300;
   margin-bottom: 30px;
 }
 
@@ -44,20 +45,32 @@ html, body {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle at top left, #9b3a3a, #6f1f1f);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-  color: #fff;
+  background: radial-gradient(circle at top left, #a33a3a, #6f1f1f);
+  box-shadow: 0 20px 35px rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 14px;
   letter-spacing: 2px;
-  transition: transform 0.3s ease;
+  animation: pulse 2s infinite;
 }
 
-.seal:hover {
-  transform: scale(1.05);
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.seal.break {
+  animation: crack 0.6s ease forwards;
+}
+
+@keyframes crack {
+  to {
+    transform: scale(0.7) rotate(15deg);
+    opacity: 0;
+  }
 }
 
 /* ---------- WAVE SCREEN ---------- */
@@ -74,10 +87,31 @@ html, body {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    rgba(40,130,150,0.9),
-    rgba(150,220,230,0.95)
+    rgba(40,120,140,0.95),
+    rgba(160,230,235,0.95)
   );
   animation: none;
+  z-index: 2;
+}
+
+@keyframes waveRecede {
+  to { transform: translateY(100%); }
+}
+
+/* ---------- FOAM ---------- */
+.foam {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("https://i.imgur.com/8QZ7Z9Z.png") repeat;
+  opacity: 0.25;
+  animation: foamMove 6s linear infinite;
+  z-index: 3;
+}
+
+@keyframes foamMove {
+  from { background-position: 0 0; }
+  to { background-position: 300px 600px; }
 }
 
 /* ---------- DATE ---------- */
@@ -86,8 +120,9 @@ html, body {
   opacity: 0;
   text-align: center;
   color: #3a2c1a;
+  z-index: 1;
   animation: fadeUp 2s ease forwards;
-  animation-delay: 2.8s;
+  animation-delay: 3.2s;
 }
 
 #date h1 {
@@ -102,13 +137,8 @@ html, body {
 }
 
 /* ---------- ANIMATIONS ---------- */
-@keyframes waveRecede {
-  from { transform: translateY(0); }
-  to { transform: translateY(100%); }
-}
-
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(25px); }
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
@@ -119,12 +149,13 @@ html, body {
 <!-- Mystery -->
 <div id="mystery" class="screen">
   <h2>Something special awaits…</h2>
-  <div class="seal" onclick="reveal()">TAP TO<br>REVEAL</div>
+  <div class="seal" id="seal" onclick="reveal()">TAP TO<br>REVEAL</div>
 </div>
 
 <!-- Wave Reveal -->
 <div id="waveScreen" class="screen">
   <div id="wave"></div>
+  <div class="foam"></div>
 
   <div id="date">
     <h1>23 · 11 · 2026</h1>
@@ -133,18 +164,20 @@ html, body {
   </div>
 </div>
 
-<audio id="waveSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c07f0b7a4.mp3"></audio>
+<audio id="crackSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c07f0b7a4.mp3"></audio>
 
 <script>
 function reveal() {
-  document.getElementById("waveSound").play();
-  document.getElementById("mystery").style.opacity = "0";
+  const seal = document.getElementById("seal");
+  seal.classList.add("break");
+  document.getElementById("crackSound").play();
 
   setTimeout(() => {
+    document.getElementById("mystery").style.opacity = "0";
     document.getElementById("waveScreen").style.opacity = "1";
     document.getElementById("wave").style.animation =
-      "waveRecede 3.2s ease-in-out forwards";
-  }, 900);
+      "waveRecede 3.5s ease-in-out forwards";
+  }, 700);
 }
 </script>
 
