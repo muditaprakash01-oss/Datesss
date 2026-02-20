@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Save the Date | 23·11·2026</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* ---------- SCREENS ---------- */
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ---------- MYSTERY SCREEN ---------- */
+#mystery {
+  background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e")
+  center / cover no-repeat;
+  color: #fff;
+  text-align: center;
+}
+
+#mystery h2 {
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+/* ---------- SEAL ---------- */
+.seal {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top left, #9b3a3a, #6f1f1f);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+  transition: transform 0.3s ease;
+}
+
+.seal:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- WAVE SCREEN ---------- */
+#waveScreen {
+  background: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470")
+  center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* ---------- WATER ---------- */
+#wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(40,130,150,0.9),
+    rgba(150,220,230,0.95)
+  );
+  animation: none;
+}
+
+/* ---------- DATE ---------- */
+#date {
+  position: relative;
+  opacity: 0;
+  text-align: center;
+  color: #3a2c1a;
+  animation: fadeUp 2s ease forwards;
+  animation-delay: 2.8s;
+}
+
+#date h1 {
+  font-size: 3.2rem;
+  letter-spacing: 4px;
+}
+
+.sub {
+  font-family: Arial, sans-serif;
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes waveRecede {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Mystery -->
+<div id="mystery" class="screen">
+  <h2>Something special awaits…</h2>
+  <div class="seal" onclick="reveal()">TAP TO<br>REVEAL</div>
+</div>
+
+<!-- Wave Reveal -->
+<div id="waveScreen" class="screen">
+  <div id="wave"></div>
+
+  <div id="date">
+    <h1>23 · 11 · 2026</h1>
+    <div class="sub">Save the Date</div><br>
+    <div class="sub">Mudita & Santosh<br>Goa, India</div>
+  </div>
+</div>
+
+<audio id="waveSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c07f0b7a4.mp3"></audio>
+
+<script>
+function reveal() {
+  document.getElementById("waveSound").play();
+  document.getElementById("mystery").style.opacity = "0";
+
+  setTimeout(() => {
+    document.getElementById("waveScreen").style.opacity = "1";
+    document.getElementById("wave").style.animation =
+      "waveRecede 3.2s ease-in-out forwards";
+  }, 900);
+}
+</script>
+
+</body>
+</html>
